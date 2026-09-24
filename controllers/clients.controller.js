@@ -1,6 +1,7 @@
 import * as clientService from "../services/clients.service.js"
 import * as bookService from "../services/books.service.js"
 import * as clientView from "../views/clients.view.js"
+import { ObjectId } from "mongodb"
 
 export async function getClients(req, res) {
     try {
@@ -35,6 +36,8 @@ export async function saveClient(req, res) {
 export async function getClientBooks(req, res) {
     try {
         const id = req.params.id
+        if (!ObjectId.isValid(id)) return res.status(404).send(clientView.pageError(404, "Cliente no encontrado"))
+
         const cliente = await clientService.getClientById(id)
         if (!cliente) return res.status(404).send(clientView.pageError(404, "Cliente no encontrado"))
         const libros = await bookService.getBooksByClient(id)

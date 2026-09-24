@@ -1,8 +1,9 @@
 import { MongoClient, ObjectId } from "mongodb"
 
-const MONGO_URI = "mongodb+srv://admin:admin@ah20232cp1.3imlc0v.mongodb.net/?appName=AH20232CP1"
+const MONGO_URI = process.env.MONGO_URI
 const client = new MongoClient(MONGO_URI)
-const db = client.db("AH20232CP1")
+const db = client.db(process.env.DB_NAME)
+
 
 export async function getClients() {
     const filter = { eliminado: { $ne: true } }

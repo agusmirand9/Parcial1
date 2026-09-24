@@ -1,6 +1,7 @@
 import * as bookService from "../services/books.service.js"
 import * as clientService from "../services/clients.service.js"
 import * as bookView from "../views/books.view.js"
+import { ObjectId } from "mongodb"
 
 
 export async function getBooks(req, res) {
@@ -18,6 +19,8 @@ export async function getBooks(req, res) {
 export async function getBookById(req, res) {
     try {
         const id = req.params.id
+        if (!ObjectId.isValid(id)) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
+
         const libro = await bookService.getBookById(id)
         if (!libro) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
         const volver = req.query.volver || "/libros"
@@ -54,6 +57,8 @@ export async function saveBook(req, res) {
 export async function editBookForm(req, res) {
     try {
         const id = req.params.id
+        if (!ObjectId.isValid(id)) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
+
         const libro = await bookService.getBookById(id)
         if (!libro) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
         const clientes = await clientService.getClients()
@@ -67,6 +72,8 @@ export async function editBookForm(req, res) {
 export async function editBook(req, res) {
     try {
         const id = req.params.id
+        if (!ObjectId.isValid(id)) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
+
         const { clienteId, ...body } = req.body
         const libro = bookService.limpiarLibro(body)
         const libroActualizado = await bookService.replaceBook(libro, id, clienteId)
@@ -82,6 +89,8 @@ export async function editBook(req, res) {
 export async function deleteBookForm(req, res) {
     try {
         const id = req.params.id
+        if (!ObjectId.isValid(id)) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
+
         const libro = await bookService.getBookById(id)
         if (!libro) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
         res.send(bookView.deleteBookForm(libro))
@@ -94,6 +103,8 @@ export async function deleteBookForm(req, res) {
 export async function deleteBook(req, res) {
     try {
         const id = req.params.id
+        if (!ObjectId.isValid(id)) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
+
         const libro = await bookService.deleteBookLogic(id)
         if (!libro) return res.status(404).send(bookView.pageError(404, "Libro no encontrado"))
         res.redirect("/libros")

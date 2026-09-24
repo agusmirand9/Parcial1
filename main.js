@@ -1,3 +1,4 @@
+import "dotenv/config"
 import express from "express"
 import booksRoutes from "./routes/books.route.js"
 import booksApiRoutes from "./api/routes/books.route.js"

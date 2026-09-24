@@ -1,9 +1,10 @@
 import {MongoClient, ObjectId} from "mongodb"
 
-const MONGO_URI ="mongodb+srv://admin:admin@ah20232cp1.3imlc0v.mongodb.net/?appName=AH20232CP1"
+const MONGO_URI = process.env.MONGO_URI
 
 const cliente = new MongoClient(MONGO_URI)
-const db = cliente.db("AH20232CP1")
+const db = cliente.db(process.env.DB_NAME)
+
 
 const CAMPOS_LIBRO = ["title", "authors", "categories", "thumbnail", "link", "description", "published_year", "average_rating"]
 
